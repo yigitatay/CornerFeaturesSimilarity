@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# DS Store File
+.DS_Store
+
+# Text files created for comparison datasets
+*.txt
+
 # Distribution / packaging
 .Python
 build/
