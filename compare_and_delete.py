@@ -6,10 +6,10 @@ import ast
 from util.util import reshape_imgs
 
 if __name__ == "__main__":
-    first_dir = '../Datasets/ZuBuD_Dataset/1000city/qimage/'
-    second_dir = '../Datasets/window_instance_segmentation_datasets/val/images/'
-    move_to = '../Datasets/duplicates/qimage--wisd_val/'
-    with open('qimage--wisd_val.txt', 'r') as file:
+    first_dir = "../NEW_DATASET/test/images/"
+    second_dir = "../DeepWindows/window_instance_segmentation_datasets/train/images/"
+    move_to = '../'
+    with open('TEST_TRAIN.txt', 'r') as file:
         lines = file.readlines()
         total_same = 0
         for line in lines:

@@ -30,8 +30,18 @@ def main_matching(IMG1, IMG2):
     img2_gray = cv2.imread(IMG2, cv2.IMREAD_GRAYSCALE)
     img1 = cv2.imread(IMG1)
     img2 = cv2.imread(IMG2)
+
+    img1 = cv2.resize(img1, (int(img1.shape[1]*0.4), int(img1.shape[0]*0.4))) 
+    img2 = cv2.resize(img2, (int(img2.shape[1]*0.4), int(img2.shape[0]*0.4)))
+
+    img1_gray = cv2.resize(img1_gray, (int(img1_gray.shape[1]*0.4), int(img1_gray.shape[0]*0.4))) 
+    img2_gray = cv2.resize(img2_gray, (int(img2_gray.shape[1]*0.4), int(img2_gray.shape[0]*0.4)))
+
+
     img1, img2 = reshape_imgs(img1, img2) ##reshapes to the larger dimension of the smaller image (in terms of number of pixels)
     img1_gray, img2_gray = reshape_imgs(img1_gray, img2_gray)
+
+
 
     # HARRIS EXTRACTION IS THE MAIN TIME-CONSUMING PART
     # corners1_prev, C1 = extract_harris(img1, HARRIS_SIGMA, HARRIS_K, HARRIS_THRESH)
@@ -78,30 +88,29 @@ def main_matching(IMG1, IMG2):
 
 
 if __name__ == "__main__":
-    DATASET_PATHS = ['../Datasets/ZuBuD_Dataset/1000city/qimage/', '../Datasets/window_instance_segmentation_datasets/val/images', '../Datasets/window_instance_segmentation_datasets/train/images',
-                     '../Datasets/ZuBuD_Dataset/png_ZuBuD/', '../Datasets/CMP_Dataset/testA/', '../Datasets/CMP_Dataset/trainA/', '../Datasets/Kuba_Dataset/images/']
-    PATH_DATA = DATASET_PATHS[0]
-    PATH_COMP = DATASET_PATHS[1]
-    imgs_data = get_img_paths(PATH_DATA)
+    PATH_TEST = "../NEW_DATASET/test/images/"
+    PATH_COMP = "../DeepWindows/window_instance_segmentation_datasets/train/images/"
+    imgs_data = get_img_paths(PATH_TEST)
     imgs_comp = get_img_paths(PATH_COMP)
 
     imgs_data.sort()
     imgs_comp.sort()
 
-    with open('qimage--wisd_val.txt', 'a') as f:
+    with open('TEST_TRAIN.txt', 'a') as f:
         count = 0
         for img_data in tqdm.tqdm(imgs_data):
-        # img_data = './qimg0052.jpg'
             similars = []
             for img_comp in imgs_comp:
                 try:
                     matches = main_matching(img_data, img_comp)
                 except:
                     continue
-                if len(matches[0]) > 5:
+                if len(matches[0]) > 10:
                     count += 1
-                    similars.append((matches[2][61:], len(matches[0])))
-            f.write(f"img 1: {matches[1][42:]}, img2: {similars}\n")
+                    similars.append((matches[2].split('/')[-1], len(matches[0])))
+            f.write(f"img 1: {matches[1].split('/')[-1]}, img2: {similars}\n")
+            # f.close()
+            # break
     f.close()
 
 
